@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Portfolio APP</title>
-</head>
-<body>
-<h1>Create User Profile</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome</h1>
+
+    <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
+    <p>username: {{ user.username }}</p>
+    <p>email: {{ user.email }}</p>
+    <p>Phone number: {{ user.phone_number }}</p>
+    <p>Address: {{ user.home_address }}</p>
+    <p>Location: {{ user.location }}</p>
+
+
+{% endblock %}
