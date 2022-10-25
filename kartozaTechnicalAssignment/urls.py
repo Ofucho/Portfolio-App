@@ -20,5 +20,5 @@ from portfolioApp.views import index, edit_userprofile
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('', edit_userprofile, name='edit_userprofile'),
+    path('edit_userprofile/', edit_userprofile, name='edit_userprofile'),
 ]
