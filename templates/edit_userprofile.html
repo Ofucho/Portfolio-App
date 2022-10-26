@@ -1,24 +1,4 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 class="text-center">Edit Profile</h2>
-
-    <form method="post" action="{% url 'edit_userprofile' %}">
-    {% csrf_token %}
-    {% if form.errors %}
-        <div class="alert alert-warning alert-dismissable" role="alert">
-            <button class="close" data-dismiss="alert">
-                <small><sup></sup></small>
-            </button>
-            <p>Your form has errors</p>
-            {% for field in form %}
-                {% if field.errors %}
-                    {{ field.errors }}
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-        {{ form.as_p }}
-    <input type="submit" value="Edit Profile" class="btn btn-secondary">
-    </form>
 
 {% endblock %}
