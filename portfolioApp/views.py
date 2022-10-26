@@ -3,6 +3,10 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import EditUserProfileForm
+from .models import userProfile
+from django.core.serializers import serialize
+import folium, geojson
+from folium.features import GeoJsonPopup, GeoJsonTooltip
 
 
 # Create your views here.
@@ -25,4 +29,29 @@ def edit_userprofile(request):
     return render(request, 'edit_userprofile.html', context)
 
 
+def view_map(request):
+    location_as_geojson = serialize('geojson', userProfile.objects.all())
+    print(location_as_geojson)
+    m = folium.Map()
 
+    # popup = GeoJsonPopup(
+    #     fields=["first_name", "last_name"],
+    #     aliases=["Parcel id :", "Owner id :", ],
+    #     localize=True, labels=True,
+    #     )
+
+    geo = folium.GeoJson(location_as_geojson, name="geojson").add_to(m)
+
+    folium.features.GeoJsonPopup(fields=["phone_number", "home_address","username","first_name", "last_name", "email"]).add_to(geo)
+
+
+    # popup.add_to(geo)
+
+
+    m = m._repr_html_()
+
+    context = {
+
+        'm': m,
+    }
+    return render(request, 'map.html', context)
