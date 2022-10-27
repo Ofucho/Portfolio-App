@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from portfolioApp.views import index, edit_userprofile, view_map
+from portfolioApp.views import index,login_user,logout_user, edit_userprofile, view_map
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login_user/',login_user, name='login_user'),
+    path('logout_user/',logout_user, name='logout_user'),
     path('', index, name='index'),
     path('edit_userprofile/', edit_userprofile, name='edit_userprofile'),
     path('view_map/', view_map, name='view_map'),

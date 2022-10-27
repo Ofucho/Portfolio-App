@@ -1,3 +1,4 @@
+# Standard imports
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import authenticate, login, logout
@@ -13,6 +14,28 @@ from folium.features import GeoJsonPopup, GeoJsonTooltip
 
 def index(request):
     return render(request, 'index.html', {})
+
+
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST['Username']
+        password = request.POST['Password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login Successful')
+            return redirect('index')
+        else:
+            messages.success(request, 'Wrong username or password. Please try again!')
+            return redirect('login_user')
+    else:
+        return render(request, 'login.html', {})
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'Logout Successful')
+    return redirect('index')
 
 
 def edit_userprofile(request):
@@ -31,22 +54,13 @@ def edit_userprofile(request):
 
 def view_map(request):
     location_as_geojson = serialize('geojson', userProfile.objects.all())
-    print(location_as_geojson)
+    # print(location_as_geojson)
     m = folium.Map()
-
-    # popup = GeoJsonPopup(
-    #     fields=["first_name", "last_name"],
-    #     aliases=["Parcel id :", "Owner id :", ],
-    #     localize=True, labels=True,
-    #     )
 
     geo = folium.GeoJson(location_as_geojson, name="geojson").add_to(m)
 
-    folium.features.GeoJsonPopup(fields=["phone_number", "home_address","username","first_name", "last_name", "email"]).add_to(geo)
-
-
-    # popup.add_to(geo)
-
+    folium.features.GeoJsonPopup(
+        fields=["username", "first_name", "last_name", "email", "phone_number", "home_address"]).add_to(geo)
 
     m = m._repr_html_()
 
